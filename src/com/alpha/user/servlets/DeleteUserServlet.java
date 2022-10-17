@@ -1,5 +1,6 @@
 package com.alpha.user.servlets;
 
+import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -9,18 +10,15 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import com.mysql.cj.x.protobuf.MysqlxSql.StmtExecute;
-
-@WebServlet("/ReadServlet")
-public class ReadUserServlet extends HttpServlet {
+@WebServlet("/DltUser")
+public class DeleteUserServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private Connection con;
 
-	public void init() {
+	public void init(ServletConfig config) throws ServletException {
 		try {
 			System.out.println("init()");
 			Class.forName("com.mysql.jdbc.Driver");
@@ -32,54 +30,28 @@ public class ReadUserServlet extends HttpServlet {
 		}
 	}
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		System.out.println("doGet()");
-
+		String email = request.getParameter("email");
 		try {
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("Select * from user ");
+			int result = stmt.executeUpdate("delete from user where email= '" + email + "' ");
 			PrintWriter out = response.getWriter();
-			out.print("<table>");
-			out.print("<tr>");
-			
-			out.print("<th>");
-			out.print("First Name");
-			out.print("</th>");
-			
-			out.print("<th>");
-			out.print("last Name");
-			out.print("</th>");
-			
-			out.print("<th>");
-			out.print("Email");
-			out.print("</th>");
-			
-			out.print("</tr>");
-			
-			while(rs.next()) {
-				out.println("<tr>");
-				out.println("<td>");
-				out.println(rs.getString(1));
-				out.println("</td>");
-				out.println("<td>");
-				out.println(rs.getString(2));
-				out.println("</td>");
-				out.println("<td>");
-				out.println(rs.getString(3));
-				out.println("</td>");
-				out.println("</tr>");
+			if (result > 0) {
+				out.println("<h1> User Deleted Sucessfully </h1>");
+			} else {
+				out.println("<h1> User Does't Exist </h1>");
+
 			}
-			
-			out.print("</table>");
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+
 	}
 
 	public void destroy() {
 		try {
-			System.out.println("destroy()");
 			con.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
