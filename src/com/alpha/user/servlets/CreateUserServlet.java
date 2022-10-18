@@ -2,6 +2,7 @@ package com.alpha.user.servlets;
 
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebInitParam;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -16,17 +17,23 @@ import java.sql.Statement;
 /**
  * Servlet  implementation class CreateUserServlet
  */
-@WebServlet(urlPatterns ="/MyUser")
+@WebServlet(urlPatterns="/MyUser", initParams= {
+		@WebInitParam(name="dbUrl",value="jdbc:mysql://localhost/mydb"),
+		@WebInitParam(name="dbUser",value="student"),
+		@WebInitParam(name="dbPass",value="student")
+		})
 public class CreateUserServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	private Connection con;
 
-	public void init() {
+	public void init(ServletConfig config) {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			System.out.println("init()");
-			con = DriverManager.getConnection("jdbc:mysql://localhost/mydb", "student", "student");
+			con = DriverManager.getConnection(config.getInitParameter("dbUrl"),
+					config.getInitParameter("dbUser"),
+					config.getInitParameter("dbPass"));
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {

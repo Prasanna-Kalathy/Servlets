@@ -59,15 +59,19 @@ public class ReadUserServlet extends HttpServlet {
 			
 			while(rs.next()) {
 				out.println("<tr>");
+				
 				out.println("<td>");
 				out.println(rs.getString(1));
 				out.println("</td>");
+				
 				out.println("<td>");
 				out.println(rs.getString(2));
 				out.println("</td>");
+				
 				out.println("<td>");
 				out.println(rs.getString(3));
 				out.println("</td>");
+				
 				out.println("</tr>");
 			}
 			
