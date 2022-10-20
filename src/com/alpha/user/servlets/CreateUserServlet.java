@@ -1,37 +1,46 @@
 package com.alpha.user.servlets;
 
-import jakarta.servlet.ServletConfig;
-import jakarta.servlet.ServletContext;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebInitParam;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Enumeration;
+
+import jakarta.servlet.ServletConfig;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
- * Servlet  implementation class CreateUserServlet
+ * Servlet implementation class CreateUserServlet
  */
-@WebServlet(urlPatterns="/MyUser")
+@WebServlet(urlPatterns = "/MyUser")
 public class CreateUserServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	private Connection con;
 
-	public void init(ServletConfig config ) {
+	public void init(ServletConfig config) {
 		try {
 			ServletContext context = config.getServletContext();
 			System.out.println("init()");
+
+			Enumeration<String> names = context.getInitParameterNames();
+
+			while (names.hasMoreElements()) {
+				String iName = names.nextElement();
+				System.out.println("Context Paramas names are " + iName);
+				System.out.println("Context Paramas Values are " + context.getInitParameter(iName));
+			}
+
 			Class.forName("com.mysql.jdbc.Driver");
-			con = DriverManager.getConnection(context.getInitParameter("dbUrl"),
-											  context.getInitParameter("dbUser"),
-											  context.getInitParameter("dbPass"));
+			con = DriverManager.getConnection(context.getInitParameter("dbUrl"), context.getInitParameter("dbUser"),
+					context.getInitParameter("dbPass"));
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
