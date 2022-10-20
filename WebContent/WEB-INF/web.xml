@@ -13,6 +13,22 @@
 		<welcome-file>default.jsp</welcome-file>
 		<welcome-file>default.htm</welcome-file>
 	</welcome-file-list>
+
+	<context-param>
+		<param-name>dbUrl</param-name>
+		<param-value>jdbc:mysql://localhost/mydb</param-value>
+	</context-param>
+
+	<context-param>
+		<param-name>dbUser</param-name>
+		<param-value>student</param-value>
+	</context-param>
+
+	<context-param>
+		<param-name>dbPass</param-name>
+		<param-value>student</param-value>
+	</context-param>
+
 	<servlet>
 		<description></description>
 		<display-name>CreateUserServlet</display-name>
@@ -47,21 +63,8 @@
 	<servlet>
 		<servlet-name>ReadUserServlet</servlet-name>
 		<servlet-class>com.alpha.user.servlets.ReadUserServlet</servlet-class>
-		<init-param>
-			<param-name>dbUrl</param-name>
-			<param-value>jdbc:mysql://localhost/mydb</param-value>
-		</init-param>
-		
-		<init-param>
-			<param-name>dbUser</param-name>
-			<param-value>student</param-value>
-		</init-param>
-		
-		<init-param>
-			<param-name>dbPass</param-name>
-			<param-value>student</param-value>
-		</init-param>
-		
+
+
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>ReadUserServlet</servlet-name>

@@ -7,6 +7,8 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import jakarta.servlet.ServletConfig;
+import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -21,11 +23,14 @@ public class UpdateUserServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private Connection con;
 
-	public void init() {
+	public void init(ServletConfig config ) {
 		try {
+			ServletContext context = config.getServletContext();
 			System.out.println("init()");
 			Class.forName("com.mysql.jdbc.Driver");
-			con = DriverManager.getConnection("jdbc:mysql://localhost/mydb", "student", "student");
+			con = DriverManager.getConnection(context.getInitParameter("dbUrl"),
+										      context.getInitParameter("dbUser"),
+											  context.getInitParameter("dbPass"));
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
